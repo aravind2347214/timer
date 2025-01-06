@@ -70,16 +70,16 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
   const isTitleValid = title.trim().length > 0 && title.length <= 50;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-        <div className="flex justify-between items-center mb-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold">Add New Timer</h2>
           </div>
           <button 
             onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1 transition-colors rounded-full hover:bg-gray-100"
           >
             <X className="w-5 h-5" />
           </button>
@@ -87,16 +87,17 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Title <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={title}
+              
               onChange={(e) => setTitle(e.target.value)}
               onBlur={() => setTouched({ ...touched, title: true })}
               maxLength={50}
-              className={` ${
+              className={`border p-2 w-full rounded-md ${
                 touched.title && !isTitleValid
                   ? 'border-red-500'
                   : 'border-gray-300'
@@ -114,25 +115,25 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className=""
+              className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter timer description (optional)"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block mb-3 text-sm font-medium text-gray-700">
               Duration <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Hours</label>
+                <label className="block mb-1 text-sm text-gray-600">Hours</label>
                 <input
                   type="number"
                   min="0"
@@ -140,11 +141,11 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   value={hours}
                   onChange={(e) => setHours(Math.min(23, parseInt(e.target.value) || 0))}
                   onBlur={() => setTouched({ ...touched, hours: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 "
+                  className=" [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Minutes</label>
+                <label className="block mb-1 text-sm text-gray-600">Minutes</label>
                 <input
                   type="number"
                   min="0"
@@ -152,11 +153,11 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   value={minutes}
                   onChange={(e) => setMinutes(Math.min(59, parseInt(e.target.value) || 0))}
                   onBlur={() => setTouched({ ...touched, minutes: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2"
+                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Seconds</label>
+                <label className="block mb-1 text-sm text-gray-600">Seconds</label>
                 <input
                   type="number"
                   min="0"
@@ -179,7 +180,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
             <button
               type="button"
               onClick={handleClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-700 transition-colors bg-gray-100 rounded-md hover:bg-gray-200"
             >
               Cancel
             </button>
