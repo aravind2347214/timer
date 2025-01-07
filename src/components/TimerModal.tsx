@@ -25,6 +25,8 @@ export const TimerModal: React.FC<TimerModalProps> = ({
     timer ? Math.floor((timer.duration % 3600) / 60) : 0
   );
   const [seconds, setSeconds] = useState(timer ? timer.duration % 60 : 0);
+
+  // State to track touched fields for validation
   const [touched, setTouched] = useState({
     title: false,
     hours: false,
@@ -55,8 +57,16 @@ export const TimerModal: React.FC<TimerModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate form data
     if (!validateTimerForm({ title, description, hours, minutes, seconds })) {
-      return;
+      // Set all fields as touched to show error messages
+      setTouched({
+        title: true,
+        hours: true,
+        minutes: true,
+        seconds: true,
+      });
+      return; // Exit if validation fails
     }
 
     const totalSeconds = hours * 3600 + minutes * 60 + seconds;
@@ -82,12 +92,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
   const handleClose = () => {
     onClose();
-    setTouched({
-      title: false,
-      hours: false,
-      minutes: false,
-      seconds: false,
-    });
+    setTouched({ title: false, hours: false, minutes: false, seconds: false });
   };
 
   const isTimeValid = hours > 0 || minutes > 0 || seconds > 0;
@@ -173,6 +178,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
+
               <div>
                 <label className="block mb-1 text-sm text-gray-600">
                   Minutes
@@ -189,6 +195,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
+
               <div>
                 <label className="block mb-1 text-sm text-gray-600">
                   Seconds
@@ -206,6 +213,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
                 />
               </div>
             </div>
+
             {!isTimeValid &&
               touched.hours &&
               touched.minutes &&
@@ -226,12 +234,8 @@ export const TimerModal: React.FC<TimerModalProps> = ({
             </Button>
             <Button
               type="submit"
-              disabled={!isTimeValid || !isTitleValid}
-              className={`px-4 py-2 text-white rounded-md ${
-                isTimeValid && isTitleValid
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
+              disabled={false}
+              className="px-4 py-2 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
             >
               {timer ? "Save Changes" : "Create Timer"}
             </Button>
