@@ -37,8 +37,8 @@ function Home() {
 
         <TimerModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)} 
-          
+          onClose={() => setIsModalOpen(false)}
+          modalType="add"
         />
       </div>
     </div>

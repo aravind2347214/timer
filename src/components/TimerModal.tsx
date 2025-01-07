@@ -9,22 +9,34 @@ interface TimerModalProps {
   isOpen: boolean;
   onClose: () => void;
   timer?: Timer;
+  modalType: "add" | "edit";
 }
 
 export const TimerModal: React.FC<TimerModalProps> = ({
   isOpen,
   onClose,
   timer,
+  modalType,
 }) => {
-  const [title, setTitle] = useState(timer?.title || "");
-  const [description, setDescription] = useState(timer?.description || "");
+  const [title, setTitle] = useState(
+    modalType === "add" ? "" : timer?.title || ""
+  );
+  const [description, setDescription] = useState(
+    modalType === "add" ? "" : timer?.description || ""
+  );
   const [hours, setHours] = useState(
-    timer ? Math.floor(timer.duration / 3600) : 0
+    modalType === "add" ? 0 : timer ? Math.floor(timer.duration / 3600) : 0
   );
   const [minutes, setMinutes] = useState(
-    timer ? Math.floor((timer.duration % 3600) / 60) : 0
+    modalType === "add"
+      ? 0
+      : timer
+      ? Math.floor((timer.duration % 3600) / 60)
+      : 0
   );
-  const [seconds, setSeconds] = useState(timer ? timer.duration % 60 : 0);
+  const [seconds, setSeconds] = useState(
+    modalType === "add" ? 0 : timer ? timer.duration % 60 : 0
+  );
 
   // State to track touched fields for validation
   const [touched, setTouched] = useState({
