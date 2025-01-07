@@ -16,7 +16,6 @@ interface TimerItemProps {
 export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   const { deleteTimer, restartTimer } = useTimerStore();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // Maintaining Remaining time separately for each timer
   const [remainingTime, setRemainingTime] = useState(timer.remainingTime);
   const [isRunning, setIsRunning] = useState(timer.isRunning);
   const intervalRef = useRef<number | null>(null);
@@ -26,20 +25,21 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = window.setInterval(() => {
-        // Independent timer functionality instead of using redux
         setRemainingTime((prevTime) => {
           if (prevTime <= 1 && !hasEndedRef.current) {
             hasEndedRef.current = true;
-            timerAudio.play().catch(console.error);
+            timerAudio.playContinous(timer.id).catch(console.error);
 
             toast.success(`Timer "${timer.title}" has ended!`, {
-              duration: 5000,
+              duration: Infinity,
               action: {
                 label: "Dismiss",
-                onClick: timerAudio.stop,
+                onClick: () => {
+                  timerAudio.stop(timer.id);
+                },
               },
             });
-            setIsRunning(false); // Stop the timer
+            setIsRunning(false);
             return 0;
           }
           return prevTime - 1;
@@ -47,8 +47,8 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
       }, 1000);
     }
 
-    return () => clearInterval(intervalRef.current!); // Cleanup
-  }, [isRunning, timer.title, timerAudio]);
+    return () => clearInterval(intervalRef.current!);
+  }, [isRunning, timer.title, timer.id, timerAudio]);
 
   const handleRestart = () => {
     hasEndedRef.current = false;
@@ -58,7 +58,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   };
 
   const handleDelete = () => {
-    timerAudio.stop();
+    timerAudio.stop(timer.id);
     deleteTimer(timer.id);
   };
 
