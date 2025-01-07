@@ -12,11 +12,11 @@ function Home() {
       <Toaster position="top-right" />
       <div className="container px-4 py-8 mx-auto">
         <div className="flex flex-row justify-between ">
-          <div className="flex flex-row">
+          <div className="flex flex-row gap-3">
             <div className="flex items-center gap-3">
               <Clock className="w-8 h-8 text-blue-600 " />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">Timer</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Timer App</h1>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
