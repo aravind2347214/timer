@@ -10,7 +10,12 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <Toaster position="top-right" />
+      <span className="hidden md:flex">
+        <Toaster position="top-right" />
+      </span>
+      <span className="flex md:hidden">
+        <Toaster position="bottom-center" />
+      </span>
       <div className="container px-4 py-8 mx-auto">
         <div className="flex flex-row justify-between ">
           <div className="flex flex-row gap-3">
@@ -32,7 +37,8 @@ function Home() {
 
         <TimerModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(false)} 
+          
         />
       </div>
     </div>
