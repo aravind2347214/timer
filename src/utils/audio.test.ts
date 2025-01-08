@@ -1,76 +1,83 @@
-// import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
-// import { TimerAudio } from './audio';
+import { describe, it, beforeEach, afterEach, expect, vi } from "vitest";
+import { TimerAudio } from "./audio";
 
-// describe('TimerAudio', () => {
-//   let timerAudio: TimerAudio;
+describe("TimerAudio", () => {
+  let timerAudio: TimerAudio;
 
-//   beforeEach(() => {
-//     timerAudio = TimerAudio.getInstance();
-//     // Mock the AudioContext
-//     globalThis.AudioContext = class {
-//       state = 'suspended';
-//       resume = vi.fn().mockResolvedValue(undefined);
-//       createOscillator = vi.fn().mockReturnValue({
-//         type: '',
-//         frequency: {
-//           setValueAtTime: vi.fn(),
-//         },
-//         start: vi.fn(),
-//         stop: vi.fn(),
-//         disconnect: vi.fn(),
-//       });
-//       createGain = vi.fn().mockReturnValue({
-//         gain: {
-//           setValueAtTime: vi.fn(),
-//           linearRampToValueAtTime: vi.fn(),
-//         },
-//         connect: vi.fn(),
-//         disconnect: vi.fn(),
-//       });
-//       destination = {};
-//     } as unknown as typeof AudioContext;
-//   });
+  beforeEach(() => {
+    timerAudio = TimerAudio.getInstance();
 
-//   afterEach(() => {
-//     // Cleanup after each test
-//     timerAudio.stop();
-//   });
+    // Mock the AudioContext
+    globalThis.AudioContext = class {
+      state = "suspended";
+      resume = vi.fn().mockResolvedValue(undefined);
+      createOscillator = vi.fn().mockReturnValue({
+        type: "",
+        frequency: {
+          setValueAtTime: vi.fn(),
+        },
+        start: vi.fn(),
+        stop: vi.fn(),
+        disconnect: vi.fn(),
+      });
+      createGain = vi.fn().mockReturnValue({
+        gain: {
+          setValueAtTime: vi.fn(),
+          linearRampToValueAtTime: vi.fn(),
+        },
+        connect: vi.fn(),
+        disconnect: vi.fn(),
+      });
+      close = vi.fn().mockResolvedValue(undefined);
+      destination = {};
+    } as unknown as typeof AudioContext;
+  });
 
-//   it('should create a singleton instance', () => {
-//     const anotherInstance = TimerAudio.getInstance();
-//     expect(timerAudio).toBe(anotherInstance);
-//   });
+  afterEach(() => {
+    // Reset mock behavior after each test
+    vi.restoreAllMocks();
+  });
 
-//   it('should initialize audio context', async () => {
-//     await timerAudio.play();
-//     expect(timerAudio['audioContext']).not.toBeNull();
-//   });
+  it("should create a singleton instance", () => {
+    const anotherInstance = TimerAudio.getInstance();
+    expect(timerAudio).toBe(anotherInstance);
+  });
 
-//   it('should play sound', async () => {
-//     const playSpy = vi.spyOn(timerAudio, 'play');
-//     await timerAudio.play();
-//     expect(playSpy).toHaveBeenCalled();
-//   });
+  it("should initialize an audio context for a timer ID", async () => {
+    const timerId = "testTimer";
+    await timerAudio.play(timerId);
 
-//   it('should cleanup resources', async () => {
-//     await timerAudio.play();
-//     timerAudio.stop();
-//     expect(timerAudio['oscillator']).toBeNull();
-//     expect(timerAudio['gainNode']).toBeNull();
-//   });
+    expect(timerAudio["audioContexts"].has(timerId)).toBe(true);
+    const audioContext = timerAudio["audioContexts"].get(timerId);
+    expect(audioContext!.resume).toHaveBeenCalled();
+  });
 
-//   it('should handle errors during play', async () => {
-//     const originalAudioContext = globalThis.AudioContext;
-//     globalThis.AudioContext = vi.fn().mockImplementation(() => {
-//       throw new Error('AudioContext error');
-//     });
+  it("should clean up resources after stopping a timer", async () => {
+    const timerId = "testTimer";
+    await timerAudio.play(timerId);
+    timerAudio.stop(timerId);
 
-//     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect(timerAudio["oscillators"].has(timerId)).toBe(false);
+    expect(timerAudio["gainNodes"].has(timerId)).toBe(false);
+    expect(timerAudio["audioContexts"].has(timerId)).toBe(false);
+  });
 
-//     await timerAudio.play();
+  it("should handle errors during audio playback", async () => {
+    const originalAudioContext = globalThis.AudioContext;
+    globalThis.AudioContext = vi.fn().mockImplementation(() => {
+      throw new Error("AudioContext error");
+    });
 
-//     expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to play audio:', expect.any(Error));
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-//     globalThis.AudioContext = originalAudioContext;
-//   });
-// }); 
+    const timerId = "errorTestTimer";
+    await timerAudio.play(timerId);
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      `Failed to play audio for timer ${timerId}:`,
+      expect.any(Error)
+    );
+
+    globalThis.AudioContext = originalAudioContext; // Restore original AudioContext
+  });
+});
