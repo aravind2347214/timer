@@ -28,7 +28,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
         setRemainingTime((prevTime) => {
           if (prevTime <= 1 && !hasEndedRef.current) {
             hasEndedRef.current = true;
-            timerAudio.playContinous(timer.id).catch(console.error);
+            timerAudio.playContinuous(timer.id).catch(console.error);
 
             toast.success(`Timer "${timer.title}" has ended!`, {
               duration: Infinity,
