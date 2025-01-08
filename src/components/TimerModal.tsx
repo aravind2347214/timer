@@ -8,7 +8,7 @@ import { Button } from "./Button";
 interface TimerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  timer?: Timer;
+  timer?: Timer | null;
   modalType: "add" | "edit";
 }
 
@@ -18,27 +18,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
   timer,
   modalType,
 }) => {
-  const [title, setTitle] = useState(
-    modalType === "add" ? "" : timer?.title || ""
-  );
-  const [description, setDescription] = useState(
-    modalType === "add" ? "" : timer?.description || ""
-  );
-  const [hours, setHours] = useState(
-    modalType === "add" ? 0 : timer ? Math.floor(timer.duration / 3600) : 0
-  );
-  const [minutes, setMinutes] = useState(
-    modalType === "add"
-      ? 0
-      : timer
-      ? Math.floor((timer.duration % 3600) / 60)
-      : 0
-  );
-  const [seconds, setSeconds] = useState(
-    modalType === "add" ? 0 : timer ? timer.duration % 60 : 0
-  );
-
-  // State to track touched fields for validation
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
   const [touched, setTouched] = useState({
     title: false,
     hours: false,
@@ -48,13 +32,25 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
   const { addTimer, editTimer } = useTimerStore();
 
+  // Reset form when modal opens/closes or modalType changes
   useEffect(() => {
-    if (isOpen && timer) {
-      setTitle(timer.title);
-      setDescription(timer.description);
-      setHours(Math.floor(timer.duration / 3600));
-      setMinutes(Math.floor((timer.duration % 3600) / 60));
-      setSeconds(timer.duration % 60);
+    if (isOpen) {
+      if (modalType === "edit" && timer) {
+        // Populate form with timer data for edit mode
+        setTitle(timer.title || "");
+        setDescription(timer.description || "");
+        setHours(Math.floor(timer.duration / 3600));
+        setMinutes(Math.floor((timer.duration % 3600) / 60));
+        setSeconds(timer.duration % 60);
+      } else {
+        // Reset form for add mode
+        setTitle("");
+        setDescription("");
+        setHours(0);
+        setMinutes(0);
+        setSeconds(0);
+      }
+      // Reset touched state
       setTouched({
         title: false,
         hours: false,
@@ -62,7 +58,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
         seconds: false,
       });
     }
-  }, [isOpen, timer]);
+  }, [isOpen, timer, modalType]);
 
   if (!isOpen) return null;
 
@@ -71,19 +67,18 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
     // Validate form data
     if (!validateTimerForm({ title, description, hours, minutes, seconds })) {
-      // Set all fields as touched to show error messages
       setTouched({
         title: true,
         hours: true,
         minutes: true,
         seconds: true,
       });
-      return; // Exit if validation fails
+      return;
     }
 
     const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
-    if (timer) {
+    if (modalType === "edit" && timer) {
       editTimer(timer.id, {
         title: title.trim(),
         description: description.trim(),
@@ -104,7 +99,12 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
   const handleClose = () => {
     onClose();
-    setTouched({ title: false, hours: false, minutes: false, seconds: false });
+    setTouched({
+      title: false,
+      hours: false,
+      minutes: false,
+      seconds: false,
+    });
   };
 
   const isTimeValid = hours > 0 || minutes > 0 || seconds > 0;
@@ -117,7 +117,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
           <div className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold">
-              {timer ? "Edit Timer" : "Add New Timer"}
+              {modalType === "edit" ? "Edit Timer" : "Add New Timer"}
             </h2>
           </div>
           <Button
@@ -139,7 +139,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
               onChange={(e) => setTitle(e.target.value)}
               onBlur={() => setTouched({ ...touched, title: true })}
               maxLength={50}
-              className={`border p-2 w-full rounded-md ${
+              className={`w-full p-2 border rounded-md ${
                 touched.title && !isTitleValid
                   ? "border-red-500"
                   : "border-gray-300"
@@ -175,9 +175,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
             </label>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block mb-1 text-sm text-gray-600">
-                  Hours
-                </label>
+                <label className="block mb-1 text-sm text-gray-600">Hours</label>
                 <input
                   type="number"
                   min="0"
@@ -246,10 +244,9 @@ export const TimerModal: React.FC<TimerModalProps> = ({
             </Button>
             <Button
               type="submit"
-              disabled={false}
               className="px-4 py-2 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
             >
-              {timer ? "Save Changes" : "Create Timer"}
+              {modalType === "edit" ? "Save Changes" : "Create Timer"}
             </Button>
           </div>
         </form>

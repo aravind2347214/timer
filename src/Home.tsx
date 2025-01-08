@@ -39,6 +39,8 @@ function Home() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           modalType="add"
+          timer={null}
+          
         />
       </div>
     </div>
