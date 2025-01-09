@@ -2,16 +2,20 @@
 
 A modern, user-friendly timer application built with React that helps you manage multiple timers simultaneously. The app features a clean, responsive design and robust state management.
 
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
-![alt text](image-5.png)
+![alt text](/assets/image.png)
+![alt text](/assets/image-1.png)
+![alt text](/assets/image-2.png)
+![alt text](/assets/image-3.png)
+![alt text](/assets/image-4.png)
+![alt text](/assets/image-5.png)
 
 ## Features
 
 - **Multiple Timers**: Create and run multiple countdowns simultaneously
+   - ▶️ Play/Pause: Start or pause the countdown
+   - 🔄 Reset: Return timer to its initial duration
+   - ✏️ Edit: Modify timer title or duration
+   - 🗑️ Delete: Remove the timer
 - **Persistent Storage**: All timers persist across page refreshes
 - **Timer Controls**:
   - Create new timers with custom duration and title
@@ -25,6 +29,12 @@ A modern, user-friendly timer application built with React that helps you manage
   - Mobile notifications show at bottom of screen
   - Dismissible notification system
   - Sound continues until notification is dismissed
+
+- **Local Storage**:
+  - The app automatically saves all timer data to your browser's localStorage, ensuring:
+  - Timers persist between page refreshes
+  - Timer states (running/paused) are preserved
+  - No data loss when closing/reopening the browser
 
 ## Tech Stack
 
@@ -62,24 +72,4 @@ A modern, user-friendly timer application built with React that helps you manage
 
 ---
 
-### Managing Timers
 
-Each timer card provides several controls:
-- ▶️ Play/Pause: Start or pause the countdown
-- 🔄 Reset: Return timer to its initial duration
-- ✏️ Edit: Modify timer title or duration
-- 🗑️ Delete: Remove the timer
-
-### Notifications
-
-When a timer completes:
-- A notification appears with the timer's title
-- An audio alert plays until dismissed
-- Click or swipe to dismiss the notification
-
-## Local Storage
-
-The app automatically saves all timer data to your browser's localStorage, ensuring:
-- Timers persist between page refreshes
-- Timer states (running/paused) are preserved
-- No data loss when closing/reopening the browser
