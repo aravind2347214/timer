@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { X, Clock } from "lucide-react";
-import { useTimerStore } from "../store/useTimerStore";
-import { validateTimerForm } from "../utils/validation";
-import { Timer } from "../types/timer";
-import { Button } from "./Button";
+import { useTimerStore } from "../../store/useTimerStore";
+import { validateTimerForm } from "../../utils/validation/validation";
+import { Timer } from "../../types/timer";
+import { Button } from "../Button/Button";
 
 interface TimerModalProps {
   isOpen: boolean;
@@ -121,6 +121,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
             </h2>
           </div>
           <Button
+            variant="icon"
             onClick={handleClose}
             className="p-1 text-gray-700 transition-colors rounded-full hover:bg-gray-100"
           >
@@ -236,14 +237,14 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
           <div className="flex justify-end gap-4">
             <Button
-              type="button"
+              variant="outline"
               onClick={handleClose}
               className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
             >
               Cancel
             </Button>
             <Button
-              type="submit"
+              variant="primary"
               className="px-4 py-2 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
             >
               {modalType === "edit" ? "Save Changes" : "Create Timer"}
