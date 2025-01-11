@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Plus, Clock } from "lucide-react";
-import { TimerList } from "./components/TimerList";
+import { TimerList } from "../src/components/TimerList/TimerList";
 import { Toaster } from "sonner";
-import { TimerModal } from "./components/TimerModal";
+import { TimerModal } from "../src/components/TimerModal/TimerModal";
+import { Button } from "../src/components/Button/Button";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,22 +30,23 @@ function Home() {
       {/* Single Toaster with dynamic position */}
       <Toaster position={isMobile ? "bottom-center" : "top-right"} />
       
-      <div className="container px-4 py-8 mx-auto">
+      <div className="container px-4 py-8 mx-auto ">
         <div className="flex flex-row justify-between">
-          <div className="flex flex-row gap-3">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex items-center gap-3 ">
               <Clock className="w-8 h-8 text-blue-600" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900">Timer App</h1>
           </div>
           
-          <button
+          <Button
             onClick={() => setIsModalOpen(true)}
+            variant="primary"
             className="flex items-center gap-2 px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg"
           >
             <Plus className="w-5 h-5" />
             Add Timer
-          </button>
+          </Button>
         </div>
 
         <TimerList />

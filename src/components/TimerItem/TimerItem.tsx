@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Timer } from "../types/timer";
-import { formatTime } from "../utils/time";
-import { useTimerStore } from "../store/useTimerStore";
+import { Timer } from "../../types/timer";
+import { formatTime } from "../../utils/time/time";
+import { useTimerStore } from "../../store/useTimerStore";
 import { toast } from "sonner";
-import { TimerAudio } from "../utils/audio";
-import { TimerControls } from "./TimerControls";
-import { TimerProgress } from "./TimerProgress";
-import { TimerModal } from "./TimerModal";
-import { Button } from "./Button";
+import { TimerAudio } from "../../utils/audio/audio";
+import { TimerControls } from "../TimerControls/TimerControls";
+import { TimerProgress } from "../TimerProgress/TimerProgress";
+import { TimerModal } from "../TimerModal/TimerModal";
+import { Button } from "../Button/Button";
+import { Pencil, RotateCcw, Trash2 } from "lucide-react";
 
 interface TimerItemProps {
   timer: Timer;
@@ -111,18 +112,29 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
               <Button
                 onClick={() => setIsEditModalOpen(true)}
                 className="p-2 text-blue-500 transition-colors rounded-full hover:bg-blue-50"
-                variant="edit"
-              />
+                variant="icon"
+                title="Edit Button"
+              >
+                <Pencil className="w-5 h-5" />
+              </Button>
               <Button
                 onClick={handleRestart}
                 className="p-2 text-blue-500 transition-colors rounded-full hover:bg-blue-50"
-                variant="restart"
-              />
+                variant="icon"
+                title="Restart Button"
+              >
+                        <RotateCcw className="w-5 h-5" />
+
+              </Button>
               <Button
                 onClick={handleDelete}
                 className="p-2 text-red-500 transition-colors rounded-full hover:bg-red-50"
-                variant="delete"
-              />
+                variant="icon"
+                title="Delete Button"
+              >
+              <Trash2 className="w-5 h-5" />
+              </Button>
+              
             </div>
           </div>
           <div className="flex flex-col items-center mt-6">

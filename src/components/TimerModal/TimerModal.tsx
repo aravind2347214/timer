@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { X, Clock } from "lucide-react";
-import { useTimerStore } from "../store/useTimerStore";
-import { validateTimerForm } from "../utils/validation";
-import { Timer } from "../types/timer";
-import { Button } from "./Button";
+import { useTimerStore } from "../../store/useTimerStore";
+import { validateTimerForm } from "../../utils/validation/validation";
+import { Timer } from "../../types/timer";
+import { Button } from "../Button/Button";
 
 interface TimerModalProps {
   isOpen: boolean;
@@ -121,6 +121,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({
             </h2>
           </div>
           <Button
+            variant="icon"
             onClick={handleClose}
             className="p-1 text-gray-700 transition-colors rounded-full hover:bg-gray-100"
           >
@@ -130,10 +131,14 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Title <span className="text-red-500">*</span>
+            <span className="flex flex-row gap-1">
+            <label  htmlFor="title"  className="block mb-1 text-sm font-medium text-gray-700">
+              Title
             </label>
+              <span className="text-red-500">*</span>
+            </span>
             <input
+              id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -157,10 +162,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
           </div>
 
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
+            <label htmlFor="description" className="block mb-1 text-sm font-medium text-gray-700">
               Description
             </label>
             <textarea
+              id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
@@ -170,13 +176,14 @@ export const TimerModal: React.FC<TimerModalProps> = ({
           </div>
 
           <div>
-            <label className="block mb-3 text-sm font-medium text-gray-700">
+            <label  className="block mb-3 text-sm font-medium text-gray-700">
               Duration <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block mb-1 text-sm text-gray-600">Hours</label>
+                <label htmlFor="hours" className="block mb-1 text-sm text-gray-600">Hours</label>
                 <input
+                  id="hours"
                   type="number"
                   min="0"
                   max="23"
@@ -190,10 +197,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
               </div>
 
               <div>
-                <label className="block mb-1 text-sm text-gray-600">
+                <label htmlFor="minutes" className="block mb-1 text-sm text-gray-600">
                   Minutes
                 </label>
                 <input
+                  id="minutes"
                   type="number"
                   min="0"
                   max="59"
@@ -207,10 +215,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
               </div>
 
               <div>
-                <label className="block mb-1 text-sm text-gray-600">
+                <label htmlFor="seconds" className="block mb-1 text-sm text-gray-600">
                   Seconds
                 </label>
                 <input
+                  id="seconds"
                   type="number"
                   min="0"
                   max="59"
@@ -236,14 +245,14 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
           <div className="flex justify-end gap-4">
             <Button
-              type="button"
+              variant="outline"
               onClick={handleClose}
               className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
             >
               Cancel
             </Button>
             <Button
-              type="submit"
+              variant="primary"
               className="px-4 py-2 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
             >
               {modalType === "edit" ? "Save Changes" : "Create Timer"}
