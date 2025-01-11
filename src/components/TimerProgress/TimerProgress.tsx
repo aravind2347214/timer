@@ -5,9 +5,10 @@ interface TimerProgressProps {
 }
 
 export const TimerProgress: React.FC<TimerProgressProps> = ({ progress }) => (
-  <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+  <div className="w-full h-2 mb-4 bg-gray-200 rounded-full">
     <div
-      className="h-full rounded-full bg-blue-600 transition-all duration-1000"
+      data-testid="progress-bar"
+      className="h-full transition-all duration-1000 bg-blue-600 rounded-full"
       style={{ width: `${progress}%` }}
     />
   </div>

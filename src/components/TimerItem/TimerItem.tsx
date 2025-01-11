@@ -113,6 +113,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
                 onClick={() => setIsEditModalOpen(true)}
                 className="p-2 text-blue-500 transition-colors rounded-full hover:bg-blue-50"
                 variant="icon"
+                title="Edit Button"
               >
                 <Pencil className="w-5 h-5" />
               </Button>
@@ -120,6 +121,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
                 onClick={handleRestart}
                 className="p-2 text-blue-500 transition-colors rounded-full hover:bg-blue-50"
                 variant="icon"
+                title="Restart Button"
               >
                         <RotateCcw className="w-5 h-5" />
 
@@ -128,6 +130,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
                 onClick={handleDelete}
                 className="p-2 text-red-500 transition-colors rounded-full hover:bg-red-50"
                 variant="icon"
+                title="Delete Button"
               >
               <Trash2 className="w-5 h-5" />
               </Button>

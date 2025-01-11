@@ -131,10 +131,14 @@ export const TimerModal: React.FC<TimerModalProps> = ({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Title <span className="text-red-500">*</span>
+            <span className="flex flex-row gap-1">
+            <label  htmlFor="title"  className="block mb-1 text-sm font-medium text-gray-700">
+              Title
             </label>
+              <span className="text-red-500">*</span>
+            </span>
             <input
+              id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -158,10 +162,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
           </div>
 
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
+            <label htmlFor="description" className="block mb-1 text-sm font-medium text-gray-700">
               Description
             </label>
             <textarea
+              id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
@@ -171,13 +176,14 @@ export const TimerModal: React.FC<TimerModalProps> = ({
           </div>
 
           <div>
-            <label className="block mb-3 text-sm font-medium text-gray-700">
+            <label  className="block mb-3 text-sm font-medium text-gray-700">
               Duration <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block mb-1 text-sm text-gray-600">Hours</label>
+                <label htmlFor="hours" className="block mb-1 text-sm text-gray-600">Hours</label>
                 <input
+                  id="hours"
                   type="number"
                   min="0"
                   max="23"
@@ -191,10 +197,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
               </div>
 
               <div>
-                <label className="block mb-1 text-sm text-gray-600">
+                <label htmlFor="minutes" className="block mb-1 text-sm text-gray-600">
                   Minutes
                 </label>
                 <input
+                  id="minutes"
                   type="number"
                   min="0"
                   max="59"
@@ -208,10 +215,11 @@ export const TimerModal: React.FC<TimerModalProps> = ({
               </div>
 
               <div>
-                <label className="block mb-1 text-sm text-gray-600">
+                <label htmlFor="seconds" className="block mb-1 text-sm text-gray-600">
                   Seconds
                 </label>
                 <input
+                  id="seconds"
                   type="number"
                   min="0"
                   max="59"
