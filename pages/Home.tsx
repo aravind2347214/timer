@@ -30,13 +30,13 @@ function Home() {
       {/* Single Toaster with dynamic position */}
       <Toaster position={isMobile ? "bottom-center" : "top-right"} />
       
-      <div className="container px-4 py-8 mx-auto ">
+      <div className="container px-4 py-8 mx-auto bg-red-400">
         <div className="flex flex-row justify-between">
-          <div className="flex flex-row items-center gap-3">
-            <div className="flex items-center gap-3 ">
-              <Clock className="w-8 h-8 text-blue-600" />
+          <div className="flex flex-row items-center text-3xl gap">
+            <div className="flex items-center">
+              <Clock className="text-blue-600 svg-size"/>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">Timer App</h1>
+            <h1 className="text-4xl font-bold text-gray-900">Timer App</h1>
           </div>
           
           <Button
